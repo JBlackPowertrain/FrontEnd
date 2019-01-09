@@ -1,0 +1,83 @@
+<div class="row col-12 justify-content-md-center m-0 whiteBox innerWithHeader">
+        <div class="blueBox row col-10 p-0 shadow progress-box ">
+                <div class="col-6 mr-auto text-nowrap p-0">
+                        <div class="row m-auto title-text4">
+                                <img src="/Assets/images/planeIcon.png" alt="">
+                                <div class="mt-auto mb-auto title-text4 pr-2">My Progress</div>
+                                <div class="mt-auto mb-auto progressBar-green" 
+                                     ng-repeat="n in [] | range:(user.userProgress/10)">
+                                        |
+                                </div>
+                                <div class="mt-auto mb-auto progressBar-white"
+                                     ng-repeat="n in [] | range:((100-user.userProgress)/10)">
+                                        |
+                                </div>                   
+                                <div class="mt-auto mb-auto pl-1">{{user.userProgress}}%</div>
+                        </div>
+                </div>
+                <div class="col-5 justify-content-md-center ml-auto mt-auto mb-auto title-text4 text-nowrap">
+                        AFH1 - continue where you left off
+                        <button class="btn button-submit-small-image ml-2" 
+                        type="submit"
+                        alt="Continue"
+                        ng-click=""></button>
+                </div>
+        </div>
+
+        <div class="row col-12">
+                <div class="col blueBox blueCard shadow clickBox" 
+                        ng-click="navigateToView('learningtools')">
+                        <div class="col">
+                                <div class="row-0">
+                                        <img src="/Assets/images/learningToolsIcon.png" width="100"/>
+                                </div>
+                                <div class="row-0 box-title-text">Learning Tools</div>
+                                <div class="row justify-content-md-center pt-3 ">
+                                        <ul style="text-align: left">
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Study Guide</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Audio Book</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('flashcards')">Flashcards</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Practice Test</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Game</a></li>
+                                        </ul>
+                                </div>
+                        </div>
+                </div>
+                <div class="col blueBox blueCard shadow " >
+                        <div class="col">
+                                <div class="row-0">
+                                        <img src="/Assets/images/savedContentIcon.png" width="100"/>
+                                </div>
+                                <div class="row-0 box-title-text">
+                                        Saved Content</div>
+                                <div class="row justify-content-md-center pt-3">
+                                        <ul style="text-align: left">
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Bookmarks</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Notes</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Flashcards</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Practice Test Questions</a></li>
+                                        </ul>
+                                </div>
+                        </div>
+                </div>
+                <div class="col blueBox blueCard shadow clickBox"
+                        ng-click="navigateToView('resources')">
+                        <div class="col">
+                                <div class="row-0">
+                                        <img src="/Assets/images/researchIcon.png" width="100"/>
+                                </div>
+                                <div class="row-0 box-title-text">
+                                        Resources</div>
+                                <div class="row justify-content-md-center pt-3">
+                                        <ul style="text-align: left">
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">The Airman Handbook (AHF1)</a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Air Force Culture, Air Force Standards (AF1 1-1) The Little Blue Book </a></li>
+                                                <li><a class="listItem-Button" href="" ng-click="navigateToView('')">Personnel, The Enlisted Force Structure (AF1 36-2618) The Little Brown Book</a></li>
+                                        </ul>
+                                </div>
+                        </div>
+        
+                </div>
+
+        </div>
+</div>

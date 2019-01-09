@@ -1,0 +1,117 @@
+
+# POST https://powertrainafttest.azurewebsites.net/Account/Register HTTP/1.1
+# content-type: application/json
+
+# {
+#   "email":"ddimarzio@powertrain.com",
+#   "username":"ddimarzio",
+#   "password":"test2"
+# }
+
+
+# POST https://powertrainafttest.azurewebsites.net/Account/Login HTTP/1.1
+# content-type: application/json
+
+# {
+#   "username":"dondimarzio",
+#   "password":"test"
+# }
+
+# POST https://powertrainafttest.azurewebsites.net/FlashCard/DeleteFlashcardBookmark   HTTP/1.1
+# content-type: application/json
+
+# {
+#   "SessionID":"38eef89c-7693-4f5c-9687-9986a9004216",
+#   "FlashcardID":"4E_18"
+# }
+
+# POST https://powertrainafttest.azurewebsites.net/Flashcard/GetUserFlagged HTTP/1.1
+
+# content-type: application/json
+# {
+#   "SessionID" : "f7fff9f0-d275-4e69-8dc0-115513eac281",
+#   "userID" : "46"
+# }
+
+# POST http://powertrainafttest.azurewebsites.net/Account/GetData HTTP/1.1
+# content-type: application/json
+
+# {
+#   "SessionID" : "70a0a607-5207-4d32-83f5-c8ea5a4efce6",
+#   "UserID" : "46"
+# }
+
+  # "UserID": 46,
+  # "SessionID": "35894622-d0ad-427c-9940-1ae957f27106",
+  # "Username": "Don",
+  # "Rank": "TestRank",
+  # "Role": "User",
+  # "Notes": [],
+  # "Bookmarks": [],
+  # "userLoggedIn": true
+
+ 
+# POST http://powertrainafttest.azurewebsites.net/Flashcard/GetFlashcard  HTTP/1.1
+# content-type: application/json
+
+# {
+#   "SessionID" : "7c978aca-2593-438b-bacf-4c0137e4c0e3",
+#   "UserID" : "46",
+#   "FlashcardID":"6F_23"
+# }
+
+# POST http://powertrainafttest.azurewebsites.net/Flashcard/GetStack HTTP/1.1
+# content-type: application/json
+
+# {
+#   "SessionID" : "ba7846aa-4beb-4fe3-ad4c-14e2899f274f",
+#   "amount" : "2",
+#   "chapters" : [1,2],
+#   "rank" : "0"
+# }
+
+# "ID": "1E_15",
+#   "Chapter": "1",
+#   "RankID": 3,
+#   "Question": "Describe the mutually assured destruction doctrine.",
+#   "Answer": "This doctrine is based on the theory that superpower strategic nuclear forces could be seized and protected to survive a nuclear attack in order to retaliate with sufficient force to destroy the other side.",
+#   "Level": "B",
+#   "Importance": 2,
+#   "Category": "A"
+
+
+# POST http://powertrainafttest.azurewebsites.net/Account/RequestPassword HTTP/1.1
+# content-type: application/json
+
+# {
+#   "email" : "ddimarzio@powertrain.com"
+# }
+
+# POST http://powertrainafttest.azurewebsites.net/AdminEReader/GetPageContent HTTP/1.1
+# content-type: application/json
+
+# {
+# "SessionID" : "f8815040-a21c-456e-8323-b85d45516054",
+# "bookType" : 0,
+# "chapterID" : 6,
+# }
+
+
+POST http://powertrainafttest.azurewebsites.net/EReader/GetSectionContent HTTP/1.1
+content-type: application/json
+
+{
+"SessionID" : "02201853-082a-455c-955e-4143bf3159b3",
+"bookType" : 0,
+"chapterID" : 5,
+"sectionID" : "5C"
+}
+
+# POST http://powertrainafttest.azurewebsites.net/EReader/GetChapterSectionTitles HTTP/1.1
+# content-type: application/json
+
+# {
+#   "SessionID" : "59f7eed7-04ea-43d2-a69f-385a87e447bb",
+#   "booktype" : 0
+# }
+
