@@ -7,7 +7,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method: 'POST',
-            url: 'https://powertrainafttest.azurewebsites.net/Account/Register',
+            url: '/Account/Register',
             data: {
                 'email': thisUser.userEmail,
                 'username': thisUser.userName,
@@ -23,7 +23,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
 
         return $http({
             method: 'POST',
-            url: 'https://powertrainafttest.azurewebsites.net/Account/Login',
+            url: '/Account/Login',
             data: {
                 'username': thisUser.userEmail,
                 'password': thisUser.userPassword
@@ -35,7 +35,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method : 'POST',
-            url : 'https://powertrainafttest.azurewebsites.net/Account/GetData',
+            url : '/Account/GetData',
             data: {
                 'SessionID' : userSession,
                 'UserID' : userID
@@ -57,7 +57,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method : 'POST',
-            url : 'https://powertrainafttest.azurewebsites.net/FlashCard/BookmarkFlashcard',
+            url : '/FlashCard/BookmarkFlashcard',
             data : {
                 "SessionID":userSession,
                 "FlashcardID":flashcardID
@@ -70,7 +70,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method : 'POST',
-            url : 'https://powertrainafttest.azurewebsites.net/FlashCard/DeleteFlashcardBookmark',
+            url : '/FlashCard/DeleteFlashcardBookmark',
             data : {
                 "SessionID":userSession,
                 "FlashcardID":flashcardID
@@ -83,7 +83,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method : 'POST',
-            url : 'https://powertrainafttest.azurewebsites.net/Flashcard/GetStack',
+            url : '/Flashcard/GetStack',
             data: {
                 'SessionID' : userSession,
                 "amount" : amount,
@@ -97,7 +97,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method : 'POST',
-            url : 'https://powertrainafttest.azurewebsites.net/Flashcard/GetUserFlagged',
+            url : '/Flashcard/GetUserFlagged',
             data: {
                 'SessionID' : userSession,
                 "userID" : userid
@@ -109,7 +109,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method : 'POST',
-            url : 'https://powertrainafttest.azurewebsites.net/EReader/GetChapterSectionTitles',
+            url : '/EReader/GetChapterSectionTitles',
             data: {
                 'SessionID' : userSession,
                 "booktype" : booktype
@@ -121,7 +121,7 @@ mainApp.service('dataService', ['$http', function ($http,$location) {
     {
         return $http({
             method : 'POST',
-            url : 'https://powertrainafttest.azurewebsites.net/EReader/GetSectionContent',
+            url : '/EReader/GetSectionContent',
             data: {
                 "SessionID" : userSession,
                 "bookType" : booktype,
