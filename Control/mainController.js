@@ -2,10 +2,9 @@ var mainApp = angular.module('mainApp', ['ngRoute','ngAnimate'] );
 
 mainApp.controller('MainController', function($scope,$sce,$location,$window,$localstorage,$document,mainModel,dataService) {
  
-  $scope.version = "Version 0.189";
+  $scope.version = "Version 0.249";
+
   $scope.Math = window.Math;
-
-
 
   // Menu system
   $scope.navMainMenuSelect = function(menuitem)
@@ -33,6 +32,7 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
   {
     $scope.navMenuMainOpen[0] = !$scope.navMenuMainOpen[0];
     $scope.closeChapterMenu[0] = false;
+    $scope.navChapterMenuOpen[0] = false;
   }
 
   $scope.closeMainMenu = function()
@@ -44,7 +44,6 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
 
   $scope.toggleChapterMenu = function()
   {
-    // $localstorage.setObject('flashCardChapters', $scope.flashCardChapters);
     $scope.allChapterSections = $localstorage.getObject('allChapterSections');
     console.log("ChaptersSections :" + JSON.stringify($scope.allChapterSections));
 
@@ -58,17 +57,12 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
 
   $scope.navChapterMenuSelect = function(menuitem)
   {
-    // $scope.navMenuGreenText(menuitem);
-
     $scope.navChapterMenuOpen[menuitem] = !$scope.navChapterMenuOpen[menuitem];
-    // $scope.navMenuMainOpen[menuitem] = !$scope.navMenuMainOpen[menuitem];
   }
 
 
   $scope.navigateToResource = function(booktype,sectionid)
   {
-      console.log("chapterid :" + parseFloat(sectionid));  // TODO Need to send the chapter not parse the sectionid
-
       $localstorage.setObject('resourcePage', [booktype,parseFloat(sectionid),sectionid]);
       $scope.closeMainMenu();
 
@@ -78,6 +72,9 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
       }
       else
       {
+        $scope.user.userLastView = 'handbook';
+        $localstorage.setObject('user', $scope.user);
+
         $window.location.reload();
       }
       // $scope.getContent();
@@ -110,7 +107,6 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
     }
     else
     {
-      // confirmPasswordInput.setCustomValidity("Match!");
    
       // TODO  - Disable submit button and add loader
       dataService.registerUser(thisUser)
@@ -235,21 +231,36 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
         {
           if (response != undefined && typeof response == "object") 
           {
-            
-
             $scope.user.userName = response.data.Username;
-            $scope.user.userRankID = response.data.Rank;
-            $scope.user.userRole = response.data.Role;
-            $scope.user.userNotes = response.data.Notes;
-            $scope.user.userBookMarks = response.data.Bookmarks;
+            $scope.user.userRankID = response.data.userRankID;
+            $scope.user.userRole = response.data.userRole;
+
+            // $scope.user.userBookMarks = response.data.userBookMarks;
+            $scope.user.userHightlights = response.data.userHightlights;
 
             $scope.user.userFlashCardFlagged = {};
             response.data.userFlashCardFlagged.forEach(function(flashcard)
             {
               $scope.user.userFlashCardFlagged[flashcard.indx] = flashcard.flagged;
             });
+
+            // Notes
+            $scope.user.userNotes = {}; 
+            response.data.userNotes.forEach(function(noteObject)
+            {
+              var noteIndex = noteObject.chapterID + "." + noteObject.sectionID + "." + noteObject.pageNumber;
+              $scope.user.userNotes[noteIndex] = noteObject.note;
+            });
             
-            console.log("User get data : "  + JSON.stringify($scope.user) );
+            // bookmarks
+            $scope.user.userBookMarks = {}; 
+            response.data.userBookMarks.forEach(function(bmObject)
+            {
+              var bmIndex = bmObject.chapterID + "." + bmObject.sectionID + "." + bmObject.pageNumber;
+              $scope.user.userBookMarks[bmIndex] = 1;
+            });
+
+            $localstorage.setObject('user', $scope.user);
 
             $scope.loginLoading = false;
             $scope.navigateToView('rankselection');
@@ -308,23 +319,6 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
               alert("Result is not JSON type");
             }
       });
-    // $scope.flashCardChapters 
-  }
-
-  // TODO  Save data
-  $scope.saveUserData = function()
-  {
-    // dataService.getUserData($scope.user.userSession,$scope.user.userID)
-    // .then(function(response) 
-    //     {
-    //       if (response != undefined && typeof response == "object") 
-    //       {
-    //       }
-    //       else
-    //       {
-    //         alert("Result is not JSON type");
-    //       }
-    // });
   }
 
   $scope.selectRank = function(rankid)
@@ -347,8 +341,8 @@ mainApp.controller('MainController', function($scope,$sce,$location,$window,$loc
     $scope.user.userBookMarks = {};
     $scope.user.userNotes = {};
     $scope.user.userFlashCardsMax = 25;
-    $scope.user.userFlashCardFlagged = {};
-    $scope.user.userHightlights = {};
+    $scope.user.userFlashCardFlagged = [];
+    $scope.user.userHightlights = [];
     $scope.user.userSession = '1118721c-15df-475a-815c-799ddbcba264';
     $scope.user.userReadHandbook = 0;
     $scope.user.flashCardSelectedAmount = 25;

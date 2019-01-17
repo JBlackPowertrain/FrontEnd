@@ -3,11 +3,6 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
         //init
         $scope.currentChapter = 1;
         $scope.currentPage = 0;
-        // $scope.currentMaxPages = mainModel.getMaxPages();
-        // $scope.currentPageContent = $sce.trustAsHtml(mainModel.handbookGetHBPage(0).content);
-        // $scope.changeSubHeaderText("Chapter " + mainModel.handbookGetHBPage(0).chapter," - " + mainModel.handbookGetHBPage(0).title);
-        // $scope.originalPageContent =  $scope.currentPageContent;
-
 
         $scope.getContent = function()
         {
@@ -20,8 +15,6 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
               if (response != undefined && typeof response == "object") 
               {
                 
-                console.log("response.data : " + JSON.stringify(response.data));
-
                 $scope.allPageContent = [];
                 $scope.allPageContent = response.data;
                 $scope.actualPageNumber = parseFloat($scope.allPageContent[0].page);
@@ -33,8 +26,10 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
                 // $scope.changeSubHeaderText("Chapter " + mainModel.handbookGetHBPage(0).chapter," - " + mainModel.handbookGetHBPage(0).title);
                 $scope.originalPageContent =  $scope.currentPageContent;
 
-                $scope.changeHeaderText("THE AIRMAN HANDBOOK 1");
+                $scope.changeHeaderText("THE AIR Force HANDBOOK 1");
                 $scope.changeSubHeaderText("Chapter " + $scope.allPageContent[0].title);
+
+                $scope.setPageData($scope.currentPage);
 
               } 
               else 
@@ -46,7 +41,9 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
 
         $scope.saveHighlights = function(page,txt)
         {
-            $scope.user.userHightlights[mainModel.handbookGetHBPage($scope.currentPage).indx] = txt.toString();
+            var keyindex = $scope.allPageContent[page].chapter + "." + $scope.allPageContent[page].section + "." + $scope.allPageContent[page].page;
+            
+            $scope.user.userHightlights[keyindex] = txt.toString();
             $localstorage.setObject('user', $scope.user);
         }
 
@@ -64,48 +61,137 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
 
         $scope.addPageNotes = function(notes)
         {
-            $scope.user.userNotes[mainModel.handbookGetHBPage($scope.currentPage).indx] = notes;
+            var keyindex = $scope.allPageContent[$scope.currentPage].chapter + "." + $scope.allPageContent[$scope.currentPage].section + "." + $scope.allPageContent[$scope.currentPage].page;
+
+            $scope.user.userNotes[keyindex] = notes;
             $localstorage.setObject('user', $scope.user);
+
+            $scope.saveThisUserData();
+
             $scope.setPageData($scope.currentPage);
             $scope.pageNotesSaved = true;
         }
 
+        $scope.saveThisUserData = function()
+        {
+            var keyindex = $scope.allPageContent[$scope.currentPage].chapter + "." + $scope.allPageContent[$scope.currentPage].section + "." + $scope.allPageContent[$scope.currentPage].page;
+
+            // Converting my system to the 'other' system
+            var notesArray = [];
+            angular.forEach($scope.user.userNotes, function(note, index) 
+            {
+                var indexarray = index.split('.');
+                var noteObject = {};
+                noteObject.chapterID = indexarray[0];
+                noteObject.sectionID = indexarray[1];
+                noteObject.pageNumber = indexarray[2];
+                noteObject.note = note;
+                notesArray.push(noteObject);
+            });
+
+            var bookmarksArray = [];
+            angular.forEach($scope.user.userBookMarks, function(bookmark, index) 
+            {
+                if ( bookmark == 1 )
+                {
+                    var indexarray = index.split('.');
+                    var bookMarkObject = {};
+                    bookMarkObject.chapterID = indexarray[0];
+                    bookMarkObject.sectionID = indexarray[1];
+                    bookMarkObject.pageNumber = indexarray[2];
+                    bookmarksArray.push(bookMarkObject);
+                }
+            });
+
+            console.log("bookmarksArray :" + JSON.stringify(bookmarksArray));
+
+            // Saving data
+            dataService.saveUserData($scope.user.userSession,
+                                        $scope.user.userID,
+                                        $scope.user.userRankID,
+                                        $scope.user.userRole,
+                                        $scope.user.userName,
+                                        bookmarksArray,
+                                        notesArray,
+                                        $scope.user.userFlashCardFlagged,
+                                        $scope.user.userHightlights,
+                                        $scope.user.userReadHandbook,
+                                        $scope.user.userProgress)
+            .then(function(response) 
+            {
+            if (response != undefined && typeof response == "object") 
+            {
+                console.log("saveUserData response: " + JSON.stringify(response.data))
+            }
+            else 
+            {
+                alert("Result is not JSON type");
+            }
+            });
+
+        }
+
         $scope.bookmarkThisPage = function()
         {
-
-            if ( $scope.user.userBookMarks[mainModel.handbookGetHBPage($scope.currentPage).indx] == 1 )
+            var keyindex = $scope.allPageContent[$scope.currentPage].chapter + "." + $scope.allPageContent[$scope.currentPage].section + "." + $scope.allPageContent[$scope.currentPage].page;
+            
+            if ( $scope.user.userBookMarks[keyindex] == 1 )
             {
-                $scope.user.userBookMarks[mainModel.handbookGetHBPage($scope.currentPage).indx] = 0;
+                $scope.user.userBookMarks[keyindex] = 0;
             }
             else
             {
-                $scope.user.userBookMarks[mainModel.handbookGetHBPage($scope.currentPage).indx] = 1;
+                $scope.user.userBookMarks[keyindex] = 1;
             } 
+
+            $scope.saveThisUserData();
+
             $scope.setPageData($scope.currentPage);
             $localstorage.setObject('user', $scope.user);
         }
 
         $scope.setPageData = function(page)
         {
-            console.log("setPageData : " + JSON.stringify($scope.user));
-            
+            var keyindex = $scope.allPageContent[page].chapter + "." + $scope.allPageContent[page].section + "." + $scope.allPageContent[page].page;
+         
+            console.log("User userNotes :" + JSON.stringify($scope.user.userNotes));
+            console.log("keyindex : " + keyindex);
+            console.log("$scope.user.userNotes[keyindex] :" + $scope.user.userNotes[keyindex]);
+
+
             // highlights
-            // if ( $scope.user.userHightlights[$scope.allPageContent[$scope.currentPage].page] != undefined)
-            // {
-            //     $scope.addHighlight($scope.user.userHightlights[$scope.allPageContent[$scope.currentPage].page);
-            // }
+            if ( $scope.user.userHightlights[keyindex] != undefined)
+            {
+                $scope.addHighlight($scope.user.userHightlights[keyindex]);
+            }
+            
             // notes
-            // $scope.pageNotes = $scope.user.userNotes[$scope.actualPageNumber];
+            if ( $scope.user.userNotes[keyindex] != undefined)
+            {
+                $scope.pageNotes = $scope.user.userNotes[keyindex];
+            }
+            else
+            {
+                $scope.pageNotes = "";
+                $scope.notesOpen = false;
+            }
 
             // boookmark
-            // if ( $scope.user.userBookMarks[$scope.allPageContent[$scope.currentPage].page] == 1 )
-            // {
-            //     $scope.pageBookmarked = true;
-            // }
-            // else
-            // {
-            //     $scope.pageBookmarked = false;
-            // }
+            if ( $scope.user.userBookMarks[keyindex] != undefined)
+            {
+                if ( $scope.user.userBookMarks[keyindex] == 1 )
+                {
+                    $scope.pageBookmarked = true;
+                }
+                else
+                {
+                    $scope.pageBookmarked = false;
+                }
+            }
+            else
+            {
+                $scope.pageBookmarked = false;
+            }
 
             // set read progress
             if ( page+1 > $scope.user.userReadHandbook)
@@ -132,22 +218,38 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
         // TODO - problem highlighting paranetheses
         $scope.getSelectedText = function()
         {
-            var txt = '';
-            if (window.getSelection)
-            {
-                txt = window.getSelection();
-            }
-            else if (document.getSelection)
-            {
-                txt = document.getSelection();
-            }
-            else if (document.selection)
-            {
-                txt = document.selection.createRange().text;
-            }
-            else return;
+            var selection = getSelection();
 
-            $scope.addHighlight(txt);
+            if (selection.getRangeAt)
+                range = selection.getRangeAt(0);
+            else {
+                range = document.createRange();
+                range.setStart(selection.anchorNode, selection.anchorOffset);
+                range.setEnd(selection.focusNode, selection.focusOffset);
+            }
+
+            console.log("Range : " + range.startOffset + ":" + range.endOffset );
+            console.log("Nodes : " + range.startContainer + ":" + range.endContainer );
+
+            console.log("range.startContainer : " + range.startContainer.textContent  );
+
+
+            // var txt = '';
+            // if (window.getSelection)
+            // {
+            //     txt = window.getSelection();
+            // }
+            // else if (document.getSelection)
+            // {
+            //     txt = document.getSelection();
+            // }
+            // else if (document.selection)
+            // {
+            //     txt = document.selection.createRange().text;
+            // }
+            // else return;
+
+            // $scope.addHighlight(txt);
         }
 
         $scope.addHighlight = function(txt)
@@ -173,5 +275,5 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
         };
 
         $scope.getContent();
-        $scope.setPageData($scope.currentPage);
+
   });

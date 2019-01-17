@@ -26,10 +26,12 @@
             </div>
         </div>
 
-        <!-- main menu  ng-mouseleave="closeMainMenu()" 
-                   
-                    ng-blur="closeMainMenu()"--> 
-        <div class="row">
+        
+        <div class="row"
+                ng-blur="closeMainMenu()"
+                ng-mouseleave="closeMainMenu()">
+
+            <!-- Main Menu -->
             <div class="col-0">
                 <div id="navMenu" 
                     class="navMenu-Main animate-show-hide"
@@ -93,7 +95,7 @@
                             <div id="menutext33" class="menu-sub mt-auto mb-auto">Flashcards</div>
                     </div>
                     <div class="row p-1 pl-5 clickBox"
-                        ng-click="navMainMenuSelect(34)">
+                        ng-click="navMainMenuSelect(34);navigateToView('practicetest');closeMainMenu()">
                             <img src="/Assets/images/menu/menu-practice-questions-icon.png">
                             <div id="menutext34" class="menu-sub mt-auto mb-auto">Practice Test Questions</div>
                     </div>
@@ -143,7 +145,7 @@
                 <div class="animate-show-hide"
                         ng-show="navSubMenuOpen[5]">
                     <div class="row p-1 pl-5 clickBox"
-                        ng-click="navMainMenuSelect(51)">
+                        ng-click="navMainMenuSelect(51);toggleChapterMenu()">
                             <img src="/Assets/images/menu/menu-afh1-icon.png">
                             <div id="menutext51" class="menu-sub mt-auto mb-auto">The Air Force Handbook 1</div>
                     </div>
@@ -176,7 +178,7 @@
                 </div>
     
                 <div class="row m-0 p-1 pl-3 clickBox"
-                    ng-click="navMainMenuSelect(8)">
+                    ng-click="navMainMenuSelect(8);navigateToView('handbook');closeMainMenu()">
                     <!-- <div id="triangle8" class="traingle mt-auto mb-auto"
                     ng-class="{'triangle-down': navMenuMainOpen[8]}"></div> -->
                     <img src="/Assets/images/menu/menu-print-icon.png">
@@ -190,29 +192,78 @@
                     <div id="menutext9" class="menu-category mt-auto mb-auto">Logout</div>
                 </div>
             </div>
-            </div>
+        </div>
+
+            <!-- Chapter menu -->
             <div class="col-0">
-                <!-- Sub menu ng-mouseleave="closeChapterMenu()" ng-blur="closeChapterMenu()"> -->
+                <!--  ng-mouseleave="closeChapterMenu()" ng-blur="closeChapterMenu()"> -->
                 <div id="navChapterMenu" 
                 class="navChapterMenu animate-show-hide"
                 tabindex="-1"
                 ng-show="navChapterMenuOpen[0]">
 
-                    <div class="p-1 pl-5 clickBox"
+                <!-- ***Testing menu*** -->
+                <!-- <div class="p-2 pl-5 clickBox"
+                    ng-click="navChapterMenuSelect(1)">
+                    <div class="row">
+                        <div id="chapterTriangle1" class="chapterTraingle mb-auto col-0"
+                            ng-class="{'chapterTraingle-down': navChapterMenuOpen[1]}"></div>
+                        <div id="chapterMenutext1" class="chapterMenu-category mt-auto col-11 p-0 pl-1">Chapt 1 test</div>
+                    </div>
+                    <div class="animate-show-hide mt-1 mb-1"
+                        ng-show="navChapterMenuOpen[1]">
+                        <div class="row m-0 clickBox section-title"
+                            ng-click="navigateToResource(0,1)">
+                                <div id="chapterMenutext11" class="chapterSubMenu-category mt-auto mb-auto">● section title</div>
+                        </div>
+                    </div>
+                    <div class="animate-show-hide mt-1 mb-1"
+                        ng-show="navChapterMenuOpen[1]">
+                        <div class="row m-0 clickBox section-title"
+                            ng-click="navigateToResource(0,2)">
+                                <div id="chapterMenutext12" class="chapterSubMenu-category mt-auto mb-auto">● section title 2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 pl-5 clickBox"
+                    ng-click="navChapterMenuSelect(2)">
+                    <div class="row">
+                        <div id="chapterTriangle1" class="chapterTraingle mb-auto col-0"
+                            ng-class="{'chapterTraingle-down': navChapterMenuOpen[2]}"></div>
+                        <div id="chapterMenutext1" class="chapterMenu-category mt-auto col-11 p-0 pl-1">Chapt1 2 test Chapt 2 testChapt 2 testChapt 2 testChapt 2 testChapt 2 testChapt 2 testChapt 2 testChapt 2 test</div>
+                    </div>
+                    <div class="animate-show-hide mt-1 mb-1"
+                        ng-show="navChapterMenuOpen[2]">
+                        <div class="row m-0 clickBox section-title"
+                            ng-click="navigateToResource(1,1)">
+                                <div id="chapterMenutext21" class="chapterSubMenu-category mt-auto mb-auto">● section title</div>
+                        </div>
+                    </div>
+                    <div class="animate-show-hide mt-1 mb-1"
+                        ng-show="navChapterMenuOpen[2]">
+                        <div class="row m-0 clickBox section-title"
+                            ng-click="navigateToResource(1,2)">
+                                <div id="chapterMenutext22" class="chapterSubMenu-category mt-auto mb-auto">● section title 2 section title 2section title 2section title 2section title 2section title 2section title 2section title 2section title 2section title 2</div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- ****************** -->
+
+                    <div class="p-2 pl-5 clickBox"
                         ng-repeat="chapt in allChapterSections"
                         ng-click="navChapterMenuSelect($index+1)">
                         
                         <div class="row">
-                            <div id="chapterTriangle1" class="chapterTraingle mt-auto mb-auto"
+                            <div id="chapterTriangle1" class="chapterTraingle mb-auto col-0"
                                 ng-class="{'chapterTraingle-down': navChapterMenuOpen[$index+1]}"></div>
-                            <div id="chapterMenutext1" class="chapterMenu-category mt-auto mb-auto">{{chapt.name}} {{chapt.desc}}</div>
+                            <div id="chapterMenutext1" class="chapterMenu-category mt-auto col-11 p-0 pl-1">{{chapt.name}} {{chapt.desc}}</div>
                         </div>
-                        <div class="animate-show-hide"
+                        <div class="animate-show-hide mt-1 mb-1"
                             ng-show="navChapterMenuOpen[$index+1]">
-                            <div class="row p-1 pl-5 clickBox"
+                            <div class="row m-0 clickBox section-title"
                                 ng-repeat="section in chapt.sections"
                                 ng-click="navigateToResource(0,section.sectionID)">
-                                    <div id="chapterMenutext11" class="chapterSubMenu-category mt-auto mb-auto">{{section.sectionTitle}}</div>
+                                    <div id="chapterMenutext11" class="chapterSubMenu-category mt-auto mb-auto">● {{section.sectionTitle}}</div>
                             </div>
                         </div>
                     </div>
@@ -225,8 +276,8 @@
         </div>
 
 
-
-    </div>
+    <!-- logged in div -->
+    </div> 
 
     <div ng-if="!user.userLoggedIn">
     </div>

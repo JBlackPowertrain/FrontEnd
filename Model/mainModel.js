@@ -12,11 +12,11 @@ mainApp.factory('mainModel',function()
         userRole:0,
         userProgress:0,
         userLastView:'login',
-        userBookMarks:{},
+        userBookMarks:[],
         userNotes:{},
         userFlashCardsMax:25,
-        userFlashCardFlagged:{},
-        userHightlights:{},
+        userFlashCardFlagged:[],
+        userHightlights:[],
         userSession:'',
         userReadHandbook:0,
         flashCardSelectedAmount:25,
@@ -35,11 +35,11 @@ mainApp.factory('mainModel',function()
         user.userRole = 0;
         user.userProgress = 0;
         user.userLastView = "login";
-        user.userBookMarks = {};
+        user.userBookMarks = [];
         user.userNotes = {};
         user.userFlashCardsMax = 25;
-        user.userFlashCardFlagged = {};
-        user.userHightlights = {};
+        user.userFlashCardFlagged = [];
+        user.userHightlights = [];
         user.userSession = '';
         user.userReadHandbook = 0;
         flashCardSelectedAmount = 25;
@@ -68,7 +68,7 @@ mainApp.factory('mainModel',function()
             rankselection:'Rank Selection',
             learningtools:'Learning Tools',
             resources:'Resources',
-            handbook:'The Airman Handbook 1',
+            handbook:'The Air Force Handbook 1',
             practicetest:'Practice Test',
             register:'Register',
             forgotPassword:'Forgot Password',
