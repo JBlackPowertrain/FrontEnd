@@ -27,7 +27,7 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
                 $scope.originalPageContent =  $scope.currentPageContent;
 
                 $scope.changeHeaderText("THE AIR Force HANDBOOK 1");
-                $scope.changeSubHeaderText("Chapter " + $scope.allPageContent[0].title);
+                $scope.changeSubHeaderText("Chapter " + ($scope.allPageContent[0].chapter-1) + " " + $scope.allPageContent[0].title);
 
                 $scope.setPageData($scope.currentPage);
 
@@ -209,10 +209,44 @@ mainApp.controller('HandbookController', function($scope,$sce,$localstorage,$win
                 $scope.currentPage = num;
                 page = $scope.allPageContent[num];
                 $scope.currentPageContent = $sce.trustAsHtml(page.content);
-                // $scope.changeSubHeaderText("Chapter " + page.chapter," - " + page.title);
                 $scope.actualPageNumber = parseFloat($scope.allPageContent[num].page);
                 $scope.setPageData($scope.currentPage);
-            }   
+            }
+            else // move chapters
+            {
+                var chaptSections = $localstorage.getObject('allChapterSections');
+                var whichPage = $localstorage.getObject('resourcePage');
+                console.log("Chapter :" + whichPage[1]);
+                console.log("Section :" + whichPage[2]);
+
+                console.log("Sections total :" + chaptSections[(whichPage[1]-1)].sections.length);
+
+                // TODO. Not the best way to get the current section we are on.
+                var currentSectionNum = 0;
+                var i = 0;
+                chaptSections[(whichPage[1]-1)].sections.forEach(function(section)
+                {
+                    if ( section.sectionID == whichPage[2])
+                    {
+                        currentSectionNum = i;   
+                    }
+                    i++;
+                });
+
+                console.log("Current Section : " + currentSectionNum);
+
+
+                var totalSections = chaptSections[(whichPage[1]-1)].sections.length;
+
+                // chapter has sections, section exists.
+                // check if chapter or sections are at the end
+                // $localstorage.setObject('allChapterSections', $scope.allChapterSections);
+
+                // $scope.allPageContent[0].chapter
+                // $localstorage.setObject('resourcePage', [booktype,parseFloat(sectionid),sectionid]);
+                // var whichPage = $localstorage.getObject('resourcePage');
+                // $scope.getContent();
+            }
         }
 
         // TODO - problem highlighting paranetheses
